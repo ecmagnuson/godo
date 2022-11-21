@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slices"
@@ -14,13 +15,15 @@ import (
 //convert Task to JSON
 //Put JSON in sqlite database
 
-//Tasks are the basic item in this program.
+//Task is the basic item in this program.
 type Task struct {
-	ID       int    // unique ID given to the Task
-	Task     string // "finish my CS hw before tonight"
-	Location string // "@school"
-	Priority string // "p1", "p2", or "p3" (high to low) priority
-	Todo     bool   // true if still left to do, else false
+	ID        int       // unique ID given to the Task
+	Task      string    // "finish my CS hw before tonight"
+	Location  string    // "@school"
+	Priority  string    // "p1", "p2", or "p3" (high to low) priority
+	Created   time.Time // time.Now() called when Task created
+	Completed time.Time // time.Time{} zero date of time.IsZero() until Todo is false
+	Todo      bool      // true if still left to do, else false
 }
 
 //ToJSON converts a Task struct to JSON
@@ -51,14 +54,22 @@ func WriteFile(file string, text string) {
 	}
 }
 
-//getTask returns a Task from a string
-func getTask(text string) Task {
+//GetTask returns a Task from a string
+func GetTask(text string) Task {
 	task := text[:strings.IndexByte(text, '@')-1] //collect everything before '@' char
 	//splits the white space between '@' context and '+' priority
 	contextPlusPriority := strings.Fields(text[strings.IndexByte(text, '@'):])
 	context, priority := contextPlusPriority[0], contextPlusPriority[1]
 
-	return Task{ID: 0, Task: task, Location: context, Priority: priority, Todo: true}
+	return Task{
+		ID:        0,
+		Task:      task,
+		Location:  context,
+		Priority:  priority,
+		Created:   time.Now(),
+		Completed: time.Time{}, //invoking zero date of time.IsZero()
+		Todo:      true,
+	}
 }
 
 //ContainsLocation checks for an "@" symbol in the text
@@ -95,7 +106,7 @@ var addCmd = &cobra.Command{
 		}
 
 		stringTask := Format(strings.Join(args, " "))
-		task := getTask(stringTask)
+		task := GetTask(stringTask)
 
 		JSONTask := task.ToJSON()
 		path := "/home/elliott/.sourcecode/godo/todo.txt"
