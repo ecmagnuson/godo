@@ -1,48 +1,105 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/exp/slices"
 )
 
-//make the zero value useful
+//parse string to make Task object
+//convert Task to JSON
+//Put JSON in sqlite database
 
 //Tasks are the basic item in this program.
 type Task struct {
 	ID       int    // unique ID given to the Task
-	task     string // "finish my CS hw before tonight"
-	context  string // "@school"
-	priority string // "p1", "p2", or "p3" (high to low) priority
-	todo     bool   // true if still left to do, else false
+	Task     string // "finish my CS hw before tonight"
+	Location string // "@school"
+	Priority string // "p1", "p2", or "p3" (high to low) priority
+	Todo     bool   // true if still left to do, else false
+}
+
+//ToJSON converts a Task struct to JSON
+func (t Task) ToJSON() string {
+	b, err := json.Marshal(t)
+	if err != nil {
+		return err.Error()
+	}
+	return string(b)
 }
 
 //String is toString override of todoItem object
 func (t Task) String() string {
-	return fmt.Sprintf("%d %s %s %s", t.ID, t.task, t.context, t.priority)
+	return fmt.Sprintf("%d %s %s %s %t", t.ID, t.Task, t.Location, t.Priority, t.Todo)
+}
+
+//WriteFile writes text to a file
+func WriteFile(file string, text string) {
+	f, err := os.OpenFile(file, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	if _, err = f.WriteString(text); err != nil {
+		panic(err)
+	}
 }
 
 //getTask returns a Task from a string
-func getTask(argument string) Task {
-	task := argument[:strings.IndexByte(argument, '@')-1] //collect everything before '@' char
+func getTask(text string) Task {
+	task := text[:strings.IndexByte(text, '@')-1] //collect everything before '@' char
 	//splits the white space between '@' context and '+' priority
-	contextPlusPriority := strings.Fields(argument[strings.IndexByte(argument, '@'):])
+	contextPlusPriority := strings.Fields(text[strings.IndexByte(text, '@'):])
 	context, priority := contextPlusPriority[0], contextPlusPriority[1]
 
-	return Task{ID: 0, task: task, context: context, priority: priority, todo: true}
+	return Task{ID: 0, Task: task, Location: context, Priority: priority, Todo: true}
 }
 
-argument := "do something @home +1"
-todo1 := getTask(argument)
-fmt.Println(todo1)
+//ContainsLocation checks for an "@" symbol in the text
+func ContainsLocation(text string) bool {
+	return strings.Contains(text, "@")
+}
+
+//ContainsPriority returns true if the string has a priority
+func ContainsPriority(task string) bool {
+	var priorities = []string{"+p1", "+p2", "+p3"}
+	return slices.Contains(priorities, task)
+}
+
+//Format readies the text so that it can be turned into a Task
+func Format(task string) string {
+	if !ContainsLocation(task) {
+		task = fmt.Sprintf("%s @unknown", task)
+	}
+	if !ContainsPriority(task) {
+		task = fmt.Sprintf("%s +p3", task)
+	}
+
+	return task
+}
+
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "add a todo item to the database",
 	Long:  "add a todo item to the database",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
+		if len(args) == 0 {
+			panic("supporting 1 arg for now")
+		}
+
+		stringTask := Format(strings.Join(args, " "))
+		task := getTask(stringTask)
+
+		JSONTask := task.ToJSON()
+		path := "/home/elliott/.sourcecode/godo/todo.txt"
+		WriteFile(path, JSONTask)
 	},
 }
 
