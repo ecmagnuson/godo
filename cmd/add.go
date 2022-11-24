@@ -1,19 +1,16 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slices"
-)
 
-//parse string to make Task object
-//convert Task to JSON
-//Put JSON in sqlite database
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+)
 
 //Task is the basic item in this program.
 type Task struct {
@@ -24,34 +21,6 @@ type Task struct {
 	Created   time.Time // time.Now() called when Task created
 	Completed time.Time // time.Time{} zero date of time.IsZero() until Todo is false
 	Todo      bool      // true if still left to do, else false
-}
-
-//ToJSON converts a Task struct to JSON
-func (t Task) ToJSON() string {
-	b, err := json.Marshal(t)
-	if err != nil {
-		return err.Error()
-	}
-	return string(b)
-}
-
-//String is toString override of todoItem object
-func (t Task) String() string {
-	return fmt.Sprintf("%d %s %s %s %t", t.ID, t.Task, t.Location, t.Priority, t.Todo)
-}
-
-//WriteFile writes text to a file
-func WriteFile(file string, text string) {
-	f, err := os.OpenFile(file, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-	if err != nil {
-		panic(err)
-	}
-
-	defer f.Close()
-
-	if _, err = f.WriteString(text); err != nil {
-		panic(err)
-	}
 }
 
 //GetTask returns a Task from a string
@@ -95,6 +64,18 @@ func Format(task string) string {
 	return task
 }
 
+func Add(task []Task) {
+
+	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	db.AutoMigrate(&task)
+
+	db.Create(&task)
+}
+
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
@@ -108,9 +89,9 @@ var addCmd = &cobra.Command{
 		stringTask := Format(strings.Join(args, " "))
 		task := GetTask(stringTask)
 
-		JSONTask := task.ToJSON()
-		path := "/home/elliott/.sourcecode/godo/todo.txt"
-		WriteFile(path, JSONTask)
+		var tasks = []Task{task}
+
+		Add(tasks)
 	},
 }
 

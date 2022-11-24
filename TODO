@@ -1,0 +1,22 @@
+add
+- add multiple arguments
+
+ls
+- list out everything with highest priority first
+- list out only specfici priorities
+- list out all of the locations 
+- list done as well
+
+do 
+- `do` a task and switch `todo` from true to false
+- `do` multiple at a time
+
+setup
+- may be needed
+
+Cobra 
+- learn flags 
+
+example command:
+to list out all of the locations 
+instead of `lsc` maybe `ls -l` 
