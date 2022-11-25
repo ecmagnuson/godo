@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-//TodoDir returns the filepath of the todo.db - home/.todo/todo.db
+//TodoDir returns the filepath of the todo.db (OS agnostic) - home/.todo/todo.db
 func TodoDir() string {
 	home, err := os.UserHomeDir()
 	if err != nil {
