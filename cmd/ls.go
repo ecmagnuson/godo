@@ -24,7 +24,11 @@ func ls() {
 	db.Where("todo", 1).Find(&tasks)
 
 	for _, task := range tasks {
-		fmt.Println(task.ID, task.Task, task.Location, task.Priority)
+		if task.Priority == "+p3" {
+			fmt.Println(task.ID, task.Task, task.Location)
+		} else {
+			fmt.Println(task.ID, task.Task, task.Location, task.Priority)
+		}
 	}
 }
 
@@ -43,7 +47,11 @@ func lsLocation(location string) {
 	db.Where("location = ? AND todo = ?", location, 1).Find(&tasks)
 
 	for _, task := range tasks {
-		fmt.Println(task.ID, task.Task, task.Location, task.Priority)
+		if task.Priority == "+p3" {
+			fmt.Println(task.ID, task.Task, task.Location)
+		} else {
+			fmt.Println(task.ID, task.Task, task.Location, task.Priority)
+		}
 	}
 }
 
