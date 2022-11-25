@@ -9,12 +9,11 @@ import (
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 func do(ids []int) {
 	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		//Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic("failed to connect database")
