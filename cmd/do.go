@@ -1,26 +1,34 @@
 package cmd
 
 import (
+	"fmt"
 	"godo/utils"
 	"strconv"
+	"time"
 
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func do(ids []int) {
 	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
-		//Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic("failed to connect database")
 	}
 
+	fmt.Println("reached here")
+
 	var tasks []Task
-	//UPDATE `tasks` SET `todo`=0 WHERE `id` IN (ids)
+	//UPDATE `tasks` SET `completed`="2022-11-24 22:50:48.546",`todo`=false WHERE `id` = 9
 	db.Where("id", ids).Find(&tasks)
-	db.Model(&tasks).Update("todo", 0)
+	db.Model(&tasks).Select("Todo", "Completed").Updates(Task{
+		Todo:      false,
+		Completed: time.Now(),
+	})
 }
 
 // doCmd represents the do command
