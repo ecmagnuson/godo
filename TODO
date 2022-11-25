@@ -3,13 +3,6 @@ ls
 - list out only specfici priorities
 - list done as well
 
-do 
-- `do` a task and switch `todo` from true to false
-- `do` multiple at a time
-
-setup
-- may be needed
-
 Cobra 
 - learn flags 
 
