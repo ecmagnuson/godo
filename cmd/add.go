@@ -70,7 +70,9 @@ func format(task string) string {
 //add adds a slice of Tasks to the db.
 func add(task []Task) {
 
-	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
+		//Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		panic("failed to connect database")
 	}

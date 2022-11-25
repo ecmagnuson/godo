@@ -32,7 +32,7 @@ func ls() {
 func lsLocation(location string) {
 
 	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
-		//: logger.Default.LogMode(logger.Info),
+		// logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic("failed to connect database")
