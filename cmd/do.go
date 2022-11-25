@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"godo/utils"
 	"strconv"
 	"time"
@@ -18,8 +17,6 @@ func do(ids []int) {
 	if err != nil {
 		panic("failed to connect database")
 	}
-
-	fmt.Println("reached here")
 
 	var tasks []Task
 	//UPDATE `tasks` SET `completed`="2022-11-24 22:50:48.546",`todo`=false WHERE `id` = 9
