@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"fmt"
 	"godo/utils"
+	"log"
 	"strconv"
 	"time"
 
@@ -35,7 +37,11 @@ var doCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var ids []int
 		for _, arg := range args {
-			id, _ := strconv.Atoi(arg)
+			id, err := strconv.Atoi(arg)
+			if err != nil {
+				fmt.Println("It means you can't parse a non integer")
+				log.Fatal(err)
+			}
 			ids = append(ids, id)
 		}
 		do(ids)
