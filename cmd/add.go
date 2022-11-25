@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -12,7 +14,7 @@ import (
 	"gorm.io/gorm"
 )
 
-//Task is the basic item in this program.
+//Task is the database type in this program.
 type Task struct {
 	ID        int       // unique ID given to the Task
 	Task      string    // "finish my CS hw before tonight"
@@ -23,8 +25,8 @@ type Task struct {
 	Todo      bool      // true if still left to do, else false
 }
 
-//GetTask returns a Task from a string
-func GetTask(text string) Task {
+//getTask returns a Task from a string
+func getTask(text string) Task {
 	task := text[:strings.IndexByte(text, '@')-1] //collect everything before '@' char
 	//splits the white space between '@' context and '+' priority
 	contextPlusPriority := strings.Fields(text[strings.IndexByte(text, '@'):])
@@ -41,38 +43,37 @@ func GetTask(text string) Task {
 	}
 }
 
-//ContainsLocation checks for an "@" symbol in the text
-func ContainsLocation(text string) bool {
+//containsLocation checks for an "@" symbol in the text
+func containsLocation(text string) bool {
 	return strings.Contains(text, "@")
 }
 
-//ContainsPriority returns true if the string has a priority
-func ContainsPriority(task string) bool {
+//containsPriority returns true if the string has a priority
+func containsPriority(task string) bool {
 	var priorities = []string{"+p1", "+p2", "+p3"}
 	return slices.Contains(priorities, task)
 }
 
-//Format readies the text so that it can be turned into a Task
-func Format(task string) string {
-	if !ContainsLocation(task) {
+//format readies the text so that it can be turned into a Task
+func format(task string) string {
+	if !containsLocation(task) {
 		task = fmt.Sprintf("%s @unknown", task)
 	}
-	if !ContainsPriority(task) {
+	if !containsPriority(task) {
 		task = fmt.Sprintf("%s +p3", task)
 	}
 
 	return task
 }
 
-func Add(task []Task) {
-
+//add adds a slice of Tasks to the db.
+func add(task []Task) {
 	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-
 	db.AutoMigrate(&task)
-
+	//db.Create add all tasks to the db
 	db.Create(&task)
 }
 
@@ -82,16 +83,35 @@ var addCmd = &cobra.Command{
 	Short: "add a todo item to the database",
 	Long:  "add a todo item to the database",
 	Run: func(cmd *cobra.Command, args []string) {
+		//want to add multiple args
 		if len(args) == 0 {
-			panic("supporting 1 arg for now")
+			var strTask []string
+			reader := bufio.NewReader(os.Stdin)
+			for {
+				fmt.Print("> ")
+				next, _ := reader.ReadString('\n')
+				if next == "\n" {
+					break
+				}
+				next = format(next)
+				strTask = append(strTask, next)
+			}
+
+			//convert to task array here
+			var tasks []Task
+			for _, task := range strTask {
+				tasks = append(tasks, getTask(task))
+			}
+
+			add(tasks)
+
+		} else { //only one thing to add
+			stringTask := format(strings.Join(args, " "))
+			task := getTask(stringTask)
+			var tasks = []Task{task}
+			add(tasks)
 		}
 
-		stringTask := Format(strings.Join(args, " "))
-		task := GetTask(stringTask)
-
-		var tasks = []Task{task}
-
-		Add(tasks)
 	},
 }
 
