@@ -20,7 +20,7 @@ type Task struct {
 	ID        int       // unique ID given to the Task
 	Task      string    // "finish my CS hw before tonight"
 	Location  string    // "@school"
-	Priority  string    // "p1", "p2", or "p3" (high to low) priority
+	Priority  string    // "+p1", "+p2", or "+p3" (high to low) priority
 	Created   time.Time // time.Now() called when Task created
 	Completed time.Time // time.Time{} zero date of time.IsZero() until Todo is false
 	Todo      bool      // true if still left to do, else false
