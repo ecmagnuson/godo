@@ -20,8 +20,9 @@ func lsAllLocations() {
 	}
 
 	var tasks []Task
-	//SELECT DISTINCT `location` FROM `tasks` ORDER BY location asc
-	db.Distinct("location").Order("location asc").Find(&tasks)
+
+	//SELECT DISTINCT `location` FROM `tasks` WHERE `todo` = 1 ORDER BY location asc
+	db.Distinct("location").Order("location asc").Where("todo", 1).Find(&tasks)
 
 	for _, task := range tasks {
 		fmt.Println(task.Location)
