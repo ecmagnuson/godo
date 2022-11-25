@@ -27,6 +27,9 @@ func do(ids []int) {
 		Todo:      false,
 		Completed: time.Now(),
 	})
+	//Many times I `do` one task at a time
+	//This will relist the location of that item
+	lsLocation(tasks[0].Location)
 }
 
 // doCmd represents the do command
