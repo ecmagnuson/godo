@@ -3,6 +3,7 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"godo/utils"
 	"os"
 	"strings"
 	"time"
@@ -68,7 +69,8 @@ func format(task string) string {
 
 //add adds a slice of Tasks to the db.
 func add(task []Task) {
-	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{})
+
+	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

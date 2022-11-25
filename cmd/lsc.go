@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"godo/utils"
 
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
@@ -11,7 +12,7 @@ import (
 
 //lsAllLocations lists out all of the locations currently in use in the database
 func lsAllLocations() {
-	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {

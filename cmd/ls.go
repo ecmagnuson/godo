@@ -2,18 +2,18 @@ package cmd
 
 import (
 	"fmt"
+	"godo/utils"
 	"strings"
 
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 //ls lists out all of the items in todo.db still left to do.
 func ls() {
-	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
+		//Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic("failed to connect database")
@@ -31,8 +31,8 @@ func ls() {
 //lsLocation lists out all items with a specific location still left todo
 func lsLocation(location string) {
 
-	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
+		//: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic("failed to connect database")
