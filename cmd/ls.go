@@ -15,13 +15,11 @@ func ls() {
 	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
-
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	var tasks []Task
-
 	//SELECT * FROM `tasks` WHERE `todo` = 1
 	db.Where("todo", 1).Find(&tasks)
 
@@ -36,20 +34,17 @@ func lsLocation(location string) {
 	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
-
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	var tasks []Task
-
-	//SELECT * FROM `tasks` WHERE location = "@school" AND todo = 1
+	//SELECT * FROM `tasks` WHERE location = `location` AND todo = 1
 	db.Where("location = ? AND todo = ?", location, 1).Find(&tasks)
 
 	for _, task := range tasks {
 		fmt.Println(task.ID, task.Task, task.Location, task.Priority)
 	}
-
 }
 
 // lsCmd represents the ls command

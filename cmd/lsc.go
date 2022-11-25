@@ -9,17 +9,16 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+//lsAllLocations lists out all of the locations currently in use in the database
 func lsAllLocations() {
 	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
-
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	var tasks []Task
-
 	//SELECT DISTINCT `location` FROM `tasks` ORDER BY location asc
 	db.Distinct("location").Order("location asc").Find(&tasks)
 
