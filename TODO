@@ -30,3 +30,5 @@ That way I could further parse out tasks @home into their own project
 But I wouldn't need to give something it's own project if it's a one off task
 
 I'm thinking learning Cobra flags will be good with this..
+
+Implementing this with raw SQL as well versus GORM..
