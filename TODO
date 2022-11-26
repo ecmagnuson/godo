@@ -11,3 +11,22 @@ Cobra
 example command:
 to list out all of the locations 
 instead of `lsc` maybe `ls -l` 
+
+Functionality I want to add 
+Adding projects as well as location.
+A project would have a tag and split from location.
+So a location would have "@home" and it would list all things @home
+but different projects @home
+like:
+
+finish painting room @home +paint
+make sure to wash paint off brushes @home +paint
+
+clean fridge @home +cleaning
+wash dishes @home +cleaning
+
+That way I could further parse out tasks @home into their own project
+
+But I wouldn't need to give something it's own project if it's a one off task
+
+I'm thinking learning Cobra flags will be good with this..
