@@ -67,15 +67,10 @@ func formatString(strTask string) string {
 	return strTask
 }
 
-//insert adds a slice of Tasks to home/.todo/todo.db.
-//can optionally add a different path if given
-func insert(task []Task, optionalDBPath ...string) {
-	path := strings.Join(optionalDBPath, " ")
-	if len(optionalDBPath) == 0 { //if no path specified then it will use home/.todo/todo.db
-		path = utils.TodoDBPath()
-	}
+//insert adds a slice of Tasks to a given DBPath
+func insert(task []Task, DBPath string) {
 
-	db, err := gorm.Open(sqlite.Open(path), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(DBPath), &gorm.Config{
 		//Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
@@ -118,13 +113,19 @@ func formatMultipleTasks(args []string) []Task {
 
 //Add adds the incoming args from user to Task after passing it to helper functions
 //that format the incoming args into Tasks.
-func Add(args []string) {
+//If no path specified then it will use home/.todo/todo.db
+func Add(args []string, optionalDBPath ...string) {
+	path := strings.Join(optionalDBPath, " ")
+	if len(optionalDBPath) == 0 {
+		path = utils.TodoDBPath()
+	}
+
 	if len(args) == 0 { //want to add multiple Tasks
 		tasks := formatMultipleTasks(args)
-		insert(tasks)
+		insert(tasks, path)
 	} else { //add one Task
 		tasks := formatOneTask(args)
-		insert(tasks)
+		insert(tasks, path)
 	}
 }
 
