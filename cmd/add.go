@@ -55,8 +55,8 @@ func containsPriority(task string) bool {
 	return slices.Contains(priorities, task)
 }
 
-//format readies the text so that it can be turned into a Task
-func format(task string) string {
+//Format readies the text so that it can be turned into a Task
+func Format(task string) string {
 	if !containsLocation(task) {
 		task = fmt.Sprintf("%s @unknown", task)
 	}
@@ -81,44 +81,48 @@ func add(task []Task) {
 	db.Create(&task)
 }
 
-// addCmd represents the add command
-var addCmd = &cobra.Command{
+//setupAdd formats the incoming args from user to Task.
+func setupAdd(args []string) {
+	//want to add multiple args
+	if len(args) == 0 {
+		var strTask []string
+		reader := bufio.NewReader(os.Stdin)
+		for {
+			fmt.Print("> ")
+			next, _ := reader.ReadString('\n')
+			if next == "\n" {
+				break
+			}
+			next = Format(next)
+			strTask = append(strTask, next)
+		}
+
+		//convert to task array here
+		var tasks []Task
+		for _, task := range strTask {
+			tasks = append(tasks, getTask(task))
+		}
+
+		add(tasks)
+
+	} else { //only one thing to add
+		stringTask := Format(strings.Join(args, " "))
+		task := getTask(stringTask)
+		var tasks = []Task{task}
+		add(tasks)
+	}
+}
+
+// AddCmd represents the add command
+var AddCmd = &cobra.Command{
 	Use:   "add",
 	Short: "add a todo item to the database",
 	Long:  "add a todo item to the database",
 	Run: func(cmd *cobra.Command, args []string) {
-		//want to add multiple args
-		if len(args) == 0 {
-			var strTask []string
-			reader := bufio.NewReader(os.Stdin)
-			for {
-				fmt.Print("> ")
-				next, _ := reader.ReadString('\n')
-				if next == "\n" {
-					break
-				}
-				next = format(next)
-				strTask = append(strTask, next)
-			}
-
-			//convert to task array here
-			var tasks []Task
-			for _, task := range strTask {
-				tasks = append(tasks, getTask(task))
-			}
-
-			add(tasks)
-
-		} else { //only one thing to add
-			stringTask := format(strings.Join(args, " "))
-			task := getTask(stringTask)
-			var tasks = []Task{task}
-			add(tasks)
-		}
-
+		setupAdd(args)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(addCmd)
+	rootCmd.AddCommand(AddCmd)
 }
