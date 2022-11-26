@@ -55,20 +55,20 @@ func containsPriority(task string) bool {
 	return slices.Contains(priorities, task)
 }
 
-//Format readies the text so that it can be turned into a Task
-func Format(task string) string {
-	if !containsLocation(task) {
-		task = fmt.Sprintf("%s @unknown", task)
+//formatString readies the text so that it can be turned into a Task
+func formatString(strTask string) string {
+	if !containsLocation(strTask) {
+		strTask = fmt.Sprintf("%s @unknown", strTask)
 	}
-	if !containsPriority(task) {
-		task = fmt.Sprintf("%s +p3", task)
+	if !containsPriority(strTask) {
+		strTask = fmt.Sprintf("%s +p3", strTask)
 	}
 
-	return task
+	return strTask
 }
 
-//add adds a slice of Tasks to the db.
-func add(task []Task) {
+//insert adds a slice of Tasks to the db.
+func insert(task []Task) {
 
 	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
 		//Logger: logger.Default.LogMode(logger.Info),
@@ -81,48 +81,58 @@ func add(task []Task) {
 	db.Create(&task)
 }
 
-//setupAdd formats the incoming args from user to Task.
-func setupAdd(args []string) {
-	//want to add multiple args
-	if len(args) == 0 {
-		var strTask []string
-		reader := bufio.NewReader(os.Stdin)
-		for {
-			fmt.Print("> ")
-			next, _ := reader.ReadString('\n')
-			if next == "\n" {
-				break
-			}
-			next = Format(next)
-			strTask = append(strTask, next)
+//formatOneTask formats the args after the 'add' command into a Task
+func formatOneTask(args []string) []Task {
+	stringTask := formatString(strings.Join(args, " "))
+	task := getTask(stringTask)
+	var tasks = []Task{task}
+	return tasks
+}
+
+//formatMultipleTasks formats stdin from a user into multiple Tasks
+func formatMultipleTasks(args []string) []Task {
+	var strTask []string
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Print("> ")
+		next, _ := reader.ReadString('\n')
+		if next == "\n" {
+			break
 		}
+		next = formatString(next)
+		strTask = append(strTask, next)
+	}
 
-		//convert to task array here
-		var tasks []Task
-		for _, task := range strTask {
-			tasks = append(tasks, getTask(task))
-		}
+	//convert to task array here
+	var tasks []Task
+	for _, task := range strTask {
+		tasks = append(tasks, getTask(task))
+	}
+	return tasks
+}
 
-		add(tasks)
-
-	} else { //only one thing to add
-		stringTask := Format(strings.Join(args, " "))
-		task := getTask(stringTask)
-		var tasks = []Task{task}
-		add(tasks)
+//Add adds the incoming args from user to Task after passing it to helper functions
+//that format the incoming args into Tasks.
+func Add(args []string) {
+	if len(args) == 0 { //want to add multiple Tasks
+		tasks := formatMultipleTasks(args)
+		insert(tasks)
+	} else { //add one Task
+		tasks := formatOneTask(args)
+		insert(tasks)
 	}
 }
 
-// AddCmd represents the add command
-var AddCmd = &cobra.Command{
+// addCmd represents the add command
+var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "add a todo item to the database",
 	Long:  "add a todo item to the database",
 	Run: func(cmd *cobra.Command, args []string) {
-		setupAdd(args)
+		Add(args)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(AddCmd)
+	rootCmd.AddCommand(addCmd)
 }
