@@ -29,7 +29,7 @@ func ls() {
 		if task.Priority != "+p3" {
 			fmt.Println(string(colorRed), task.ID, task.Task, task.Location, task.Priority, string(colorReset))
 		} else {
-			fmt.Println(task.ID, task.Task, task.Location, task.Priority)
+			fmt.Println(task.ID, task.Task, task.Location)
 		}
 	}
 }
@@ -54,7 +54,7 @@ func lsLocation(location string) {
 		if task.Priority != "+p3" {
 			fmt.Println(string(colorRed), task.ID, task.Task, task.Location, task.Priority, string(colorReset))
 		} else {
-			fmt.Println(task.ID, task.Task, task.Location, task.Priority)
+			fmt.Println(task.ID, task.Task, task.Location)
 		}
 	}
 }
