@@ -24,8 +24,10 @@ func ls() {
 	db.Where("todo", 1).Find(&tasks)
 
 	for _, task := range tasks {
-		if task.Priority == "+p3" {
-			fmt.Println(task.ID, task.Task, task.Location)
+		colorReset := "\033[0m"
+		colorRed := "\033[31m"
+		if task.Priority != "+p3" {
+			fmt.Println(string(colorRed), task.ID, task.Task, task.Location, task.Priority, string(colorReset))
 		} else {
 			fmt.Println(task.ID, task.Task, task.Location, task.Priority)
 		}
@@ -47,8 +49,10 @@ func lsLocation(location string) {
 	db.Where("location = ? AND todo = ?", location, 1).Find(&tasks)
 
 	for _, task := range tasks {
-		if task.Priority == "+p3" {
-			fmt.Println(task.ID, task.Task, task.Location)
+		colorReset := "\033[0m"
+		colorRed := "\033[31m"
+		if task.Priority != "+p3" {
+			fmt.Println(string(colorRed), task.ID, task.Task, task.Location, task.Priority, string(colorReset))
 		} else {
 			fmt.Println(task.ID, task.Task, task.Location, task.Priority)
 		}
