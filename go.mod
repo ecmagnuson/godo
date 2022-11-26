@@ -5,7 +5,7 @@ go 1.18
 require github.com/spf13/cobra v1.6.1
 
 require (
-	github.com/mattn/go-sqlite3 v1.14.16 // indirect
+	github.com/mattn/go-sqlite3 v1.14.16
 	gorm.io/driver/sqlite v1.4.3
 	gorm.io/gorm v1.24.2
 )
