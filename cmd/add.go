@@ -67,11 +67,11 @@ func formatString(strTask string) string {
 	return strTask
 }
 
-//insert adds a slice of Tasks to the db.
-//can optionally add a different path other than home/.todo/todo.db
-func insert(task []Task, file_optional ...string) {
-	path := strings.Join(file_optional, " ")
-	if len(file_optional) == 0 { //if no path specified then it will use home/.todo/todo.db
+//insert adds a slice of Tasks to home/.todo/todo.db.
+//can optionally add a different path if given
+func insert(task []Task, optionalDBPath ...string) {
+	path := strings.Join(optionalDBPath, " ")
+	if len(optionalDBPath) == 0 { //if no path specified then it will use home/.todo/todo.db
 		path = utils.TodoDBPath()
 	}
 
