@@ -11,7 +11,7 @@ import (
 
 //lsAllLocations lists out all of the locations currently in use in the database
 func lsAllLocations() {
-	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
 		//Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {

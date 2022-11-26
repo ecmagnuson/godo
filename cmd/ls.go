@@ -12,7 +12,7 @@ import (
 
 //ls lists out all of the items in todo.db still left to do.
 func ls() {
-	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
 		//Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
@@ -37,7 +37,7 @@ func ls() {
 //lsLocation lists out all items with a specific location still left todo
 func lsLocation(location string) {
 
-	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
 		// logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {

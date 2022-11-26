@@ -68,9 +68,14 @@ func formatString(strTask string) string {
 }
 
 //insert adds a slice of Tasks to the db.
-func insert(task []Task) {
+//can optionally add a different path other than home/.todo/todo.db
+func insert(task []Task, file_optional ...string) {
+	path := strings.Join(file_optional, " ")
+	if len(file_optional) == 0 { //if no path specified then it will use home/.todo/todo.db
+		path = utils.TodoDBPath()
+	}
 
-	db, err := gorm.Open(sqlite.Open(utils.TodoDir()), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(path), &gorm.Config{
 		//Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
