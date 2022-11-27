@@ -37,10 +37,18 @@ func ls(str string) {
 	}
 
 	for _, task := range tasks {
-		if task.Project == "+" {
-			fmt.Println(task.ID, task.Priority, task.Task, task.Location)
+
+		strTask := fmt.Sprintf("%d %s %s %s", task.ID, task.Priority, task.Task, task.Location)
+
+		if task.Project != "+" {
+			strTask = fmt.Sprintf(strTask+" %s", task.Project)
+		}
+		if task.Priority == "!" {
+			colorReset := "\033[0m"
+			colorBlue := "\033[34m"
+			fmt.Println(string(colorBlue) + strTask + string(colorReset))
 		} else {
-			fmt.Println(task.ID, task.Priority, task.Task, task.Location, task.Project)
+			fmt.Println(strTask)
 		}
 	}
 }
