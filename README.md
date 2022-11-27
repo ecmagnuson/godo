@@ -157,12 +157,25 @@ list every `@home +project` unique tag used in the `todo.db`
 @school +grading
 ```
 
+## Do
+do a task one at a time with its id
+
+```
+godo do 3
+```
+
+do multiple tasks at once
+
+```
+godo do 1 2 4
+```
 
 ### Requirements
 [Go](https://go.dev/)
 
 ### Installation
--
+- `git clone https://github.com/ecmagnuson/godo.git`
+- `go build godo`
 
 ### TODO
 - implement listing of done tasks
