@@ -21,15 +21,12 @@ func do(ids []int) {
 	}
 
 	var tasks []Task
-	//UPDATE `tasks` SET `completed`="2022-11-24 22:50:48.546",`todo`=false WHERE `id` = 9
+	//UPDATE `tasks` SET `completed`="time",`todo`=false WHERE `id` in (ids)
 	db.Where("id", ids).Find(&tasks)
 	db.Model(&tasks).Select("Todo", "Completed").Updates(Task{
 		Todo:      false,
 		Completed: time.Now(),
 	})
-	//Many times I `do` one task at a time
-	//This will relist the location of that item
-	lsLocation(tasks[0].Location)
 }
 
 // doCmd represents the do command
