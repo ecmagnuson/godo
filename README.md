@@ -58,28 +58,104 @@ the following is a list of the functionaility of `godo`
 
 notes:
 
-- When listing out concrete tasks, high priority tasks will always show first
 - When a task is completed, none of the `ls` methods will list it anymore
 
 
 ## Usage
 `godo setup` will create a `.todo` directory in the users home directory.
 
-### Add
+## Add
 adding a task for the first time will create `todo.db` inside of `~/.todo/`
 
-#### one at a time
+### one at a time
 arguments after `add` command will be added to the database
+
 `godo add complete assignment @school`
 
 arguments can be prefixed with `!` to mark it as high priority
+
 `godo add ! send important email to boss @work`
 
 arguments can be given a `+project` as well
+
 `godo add clean fridge @home +cleaning`
 
 ### multiple tasks at once
+when `godo add` is called with no arguments you can to add multiple tasks at once
 
+```
+> ! call bank @home +finance
+> grade papers @school +grading
+> finish my part of presentation @school
+>
+```
+To break out of this and add each line - corresponding to each task - just hit `Enter ↵` on a blank line and it will add each task to the todo.db
+
+## List
+high priority tasks will always print first
+
+list everything in `todo.db`
+
+```
+godo ls
+2 ! send important email to boss @work
+4 ! call bank @home +finance
+1   complete assignment @school
+3   clean fridge @home +cleaning
+5   grade papers @school +grading
+6   finish my part of presentation @school
+```
+
+list everything `@home`
+
+```
+godo ls @home
+4 ! call bank @home +finance
+3   clean fridge @home +cleaning
+```
+
+list every taks with `+finance` tag
+
+```
+godo ls +finance
+4 ! call bank @home +finance
+```
+
+list every task with a high priority
+
+```
+godo ls !
+2 ! send important email to boss @work
+4 ! call bank @home +finance
+```
+
+Sometimes I forget the exact `@location` or `+project` I have used in the `todo.db`, so I have implemented a subcommand `ls all`
+
+list all `@location` tags being used in the `todo.db`
+
+```
+godo ls all @
+@home
+@school
+@work
+```
+
+list all `+project` tags being used in the `todo.db`
+
+```
+godo ls all +
++cleaning
++finance
++grading
+```
+
+list every `@home +project` unique tag used in the `todo.db`
+
+```
+@home +cleaning
+@home +finance
+@school +grading
+```
 
 
 ### Requirements
