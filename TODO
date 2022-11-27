@@ -32,3 +32,15 @@ But I wouldn't need to give something it's own project if it's a one off task
 I'm thinking learning Cobra flags will be good with this..
 
 Implementing this with raw SQL as well versus GORM..
+
+Additionally:
+convert priority to ! - if it begins with ! then it is a high priority and should be printed first 
+convert + to project instead of priority
+list on project as well as location
+list on project and location
+due date? porentially say how many days from now that is
+update todo
+delete todo
+undo todo
+list done items
+ 
