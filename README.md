@@ -147,6 +147,7 @@ godo ls all +
 list every `@home +project` unique tag used in the `todo.db`
 
 ```
+godo ls all
 @home +cleaning
 @home +finance
 @school +grading
