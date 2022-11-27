@@ -7,14 +7,13 @@ import (
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 //lsCombined lists out all of the unique instances of locations and projects
 //i.e. @home +godo, @home +cleaning, @home +fianance.. etc.
 func lsCombined() {
 	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		//Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic("failed to connect database")
