@@ -27,9 +27,12 @@ func ls(str string) {
 		if strings.Contains(str, "+") {
 			//SELECT * FROM `tasks` WHERE project = str AND todo = 1 ORDER BY priority desc
 			db.Order("priority desc").Where("project = ? AND todo = ?", str, 1).Find(&tasks)
-		} else {
+		} else if strings.Contains(str, "@") {
 			//SELECT * FROM `tasks` WHERE location = str AND todo = 1 ORDER BY priority desc
 			db.Order("priority desc").Where("location = ? AND todo = ?", str, 1).Find(&tasks)
+		} else if strings.Contains(str, "!") {
+			//SELECT * FROM `tasks` WHERE priority = "!"
+			db.Where("priority = ?", str).Find(&tasks)
 		}
 	} else { //list all
 		//SELECT * FROM `tasks` WHERE `todo` = 1 ORDER BY priority desc
