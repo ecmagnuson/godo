@@ -17,30 +17,22 @@ Todo      bool      // true when created, false when done
 ```
 
 ## Philosophy
-I like to format my tasks as actionable events that have a location
 
-e.g. `clean the fridge @home`
+    I like to format my tasks as actionable events that have a location
+    "clean the fridge @home"
 
-tasks can have priority associated with them with `!`
+    tasks can have priority associated with them with `!`
+    "! send important email @work"
 
-e.g. `! send important email @work`
-
-Optionally, tasks can have a project associated with it
-
-e.g. `clean the fridge @home +cleaning`
-
-task do not need a location. If one is not given, it will be assigned `@unknown`
-
-if a task does not have an `@location` the current implemtation does not allow an `+project`
+    Optionally, tasks can have a project associated with it
+    "clean the fridge @home +cleaning"
 
 this way I can split various projects into each location, for example
 
-`clean fridge @home +cleaning`
+    "clean fridge @home +cleaning"
+    "pay credit card bill @home finance"
 
-`pay credit card bill @home finance`
-
-both of these tasks are `@home` but they have different `+project` tags associated with them
-
+both of these tasks are `@home` but they have different `+project` tags associated with them.
 this underlying though process forms the basis of `godo`
 
 the following is a list of the functionaility of `godo`
@@ -59,6 +51,8 @@ the following is a list of the functionaility of `godo`
 notes:
 
 - When a task is completed, none of the `ls` methods will list it anymore
+- task do not need a location. If one is not given, it will be assigned `@unknown`
+- if a task does not have an `@location` the current implemtation does not allow an `+project`
 
 
 ## Usage
@@ -68,8 +62,8 @@ notes:
 adding a task for the first time will create `todo.db` inside of `~/.todo/`
 
 ### one at a time
-arguments after `add` command will be added to the database
 
+arguments after `add` command will be added to the database
 `godo add complete assignment @school`
 
 arguments can be prefixed with `!` to mark it as high priority
