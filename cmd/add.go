@@ -17,6 +17,7 @@ import (
 //Task is the database type in this program.
 type Task struct {
 	ID        int       // unique ID given to the Task
+	Priority  string    // urgent task prefixed with "!"
 	Task      string    // "finish my CS hw before tonight"
 	Location  string    // "@school"
 	Project   string    // "+p1", "+p2", or "+p3" (high to low) priority
@@ -27,16 +28,24 @@ type Task struct {
 
 //getTask returns a Task from a string
 func getTask(text string) Task {
+	priority := "0"                               //default priority is nothing showing
 	task := text[:strings.IndexByte(text, '@')-1] //collect everything before '@' char
+
+	if strings.HasPrefix(task, "!") {
+		priority = "!"
+		task = text[strings.IndexByte(text, '!')+2 : strings.IndexByte(text, '@')-1]
+	}
+
 	//splits the white space between '@' context and '+' priority
-	contextPlusPriority := strings.Fields(text[strings.IndexByte(text, '@'):])
-	context, priority := contextPlusPriority[0], contextPlusPriority[1]
+	contextPlusProject := strings.Fields(text[strings.IndexByte(text, '@'):])
+	context, project := contextPlusProject[0], contextPlusProject[1]
 
 	return Task{
 		ID:        0,
 		Task:      task,
+		Priority:  priority,
 		Location:  context,
-		Project:   priority,
+		Project:   project,
 		Created:   time.Now(),
 		Completed: time.Time{}, //invoking zero date of time.IsZero()
 		Todo:      true,

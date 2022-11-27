@@ -25,10 +25,13 @@ func ls() {
 
 	for _, task := range tasks {
 		if task.Project == "+" {
-			fmt.Println(task.ID, task.Task, task.Location)
+			fmt.Println(task.ID, task.Priority, task.Task, task.Location)
 		} else {
-			fmt.Println(task.ID, task.Task, task.Location, task.Project)
+			fmt.Println(task.ID, task.Priority, task.Task, task.Location, task.Project)
 		}
+		/* 		fmt.Println(task.ID, "h")
+		   		fmt.Println(task.Priority, "h")
+		   		fmt.Println(task.Task, "h") */
 	}
 }
 
@@ -48,9 +51,9 @@ func lsLocation(location string) {
 
 	for _, task := range tasks {
 		if task.Project == "+" {
-			fmt.Println(task.ID, task.Task, task.Location)
+			fmt.Println(task.ID, task.Priority, task.Task, task.Location)
 		} else {
-			fmt.Println(task.ID, task.Task, task.Location, task.Project)
+			fmt.Println(task.ID, task.Priority, task.Task, task.Location, task.Project)
 		}
 	}
 }
