@@ -6,6 +6,9 @@
 *.dylib
 godo
 
+#test db
+test.db
+
 # Test binary, built with `go test -c`
 *.test
 
