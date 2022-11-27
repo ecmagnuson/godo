@@ -11,7 +11,8 @@ import (
 )
 
 //ls lists out all items with a specific location still left todo
-func ls(location string) {
+//list out anything in db
+func ls(str string) {
 
 	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
 		// logger.Default.LogMode(logger.Info),
@@ -21,9 +22,9 @@ func ls(location string) {
 	}
 
 	var tasks []Task
-	if len(location) > 0 { //list all from one location
+	if len(str) > 0 { //list all from one location
 		//SELECT * FROM `tasks` WHERE location = `location` AND todo = 1
-		db.Where("location = ? AND todo = ?", location, 1).Find(&tasks)
+		db.Where("location = ? OR project = ? AND todo = ?", str, str, 1).Find(&tasks)
 	} else { //list all
 		//SELECT * FROM `tasks` WHERE `todo` = 1
 		db.Where("todo", 1).Find(&tasks)
