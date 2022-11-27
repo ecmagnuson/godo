@@ -15,16 +15,22 @@ import (
 func ls(str string) {
 
 	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
-		// logger.Default.LogMode(logger.Info),
+		//Logger: logger.Default.LogMode(logger.Info),
 	})
+
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	var tasks []Task
-	if len(str) > 0 { //list all from one location
-		//SELECT * FROM `tasks` WHERE location = `location` AND todo = 1
-		db.Where("location = ? OR project = ? AND todo = ?", str, str, 1).Find(&tasks)
+	if len(str) > 0 { //list all from location or project
+		if strings.Contains(str, "+") {
+			//SELECT * FROM `tasks` WHERE project = str AND todo = 1
+			db.Where("project = ? AND todo = ?", str, 1).Find(&tasks)
+		} else {
+			//SELECT * FROM `tasks` WHERE location = str AND todo = 1
+			db.Where("location = ? AND todo = ?", str, 1).Find(&tasks)
+		}
 	} else { //list all
 		//SELECT * FROM `tasks` WHERE `todo` = 1
 		db.Where("todo", 1).Find(&tasks)
