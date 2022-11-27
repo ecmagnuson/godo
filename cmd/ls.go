@@ -10,31 +10,6 @@ import (
 	"gorm.io/gorm"
 )
 
-//ls lists out all of the items in todo.db still left to do.
-func ls() {
-	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
-		//Logger: logger.Default.LogMode(logger.Info),
-	})
-	if err != nil {
-		panic("failed to connect database")
-	}
-
-	var tasks []Task
-	//SELECT * FROM `tasks` WHERE `todo` = 1
-	db.Where("todo", 1).Find(&tasks)
-
-	for _, task := range tasks {
-		if task.Project == "+" {
-			fmt.Println(task.ID, task.Priority, task.Task, task.Location)
-		} else {
-			fmt.Println(task.ID, task.Priority, task.Task, task.Location, task.Project)
-		}
-		/* 		fmt.Println(task.ID, "h")
-		   		fmt.Println(task.Priority, "h")
-		   		fmt.Println(task.Task, "h") */
-	}
-}
-
 //lsLocation lists out all items with a specific location still left todo
 func lsLocation(location string) {
 
@@ -46,8 +21,13 @@ func lsLocation(location string) {
 	}
 
 	var tasks []Task
-	//SELECT * FROM `tasks` WHERE location = `location` AND todo = 1
-	db.Where("location = ? AND todo = ?", location, 1).Find(&tasks)
+	if len(location) > 0 { //list all from one location
+		//SELECT * FROM `tasks` WHERE location = `location` AND todo = 1
+		db.Where("location = ? AND todo = ?", location, 1).Find(&tasks)
+	} else { //list all
+		//SELECT * FROM `tasks` WHERE `todo` = 1
+		db.Where("todo", 1).Find(&tasks)
+	}
 
 	for _, task := range tasks {
 		if task.Project == "+" {
@@ -64,13 +44,7 @@ var lsCmd = &cobra.Command{
 	Short: "list out the items in the todo database",
 	Long:  "list out the items in the todo database",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			ls()
-		} else if len(args) == 1 {
-			lsLocation(strings.Join(args, " "))
-		} else {
-			panic("no args for entire list and 1 arg for specific location.")
-		}
+		lsLocation(strings.Join(args, " "))
 	},
 }
 
