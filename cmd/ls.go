@@ -8,7 +8,6 @@ import (
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 //ls lists out all items with a specific location still left todo
@@ -16,7 +15,7 @@ import (
 func ls(str string) {
 
 	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		//Logger: logger.Default.LogMode(logger.Info),
 	})
 
 	if err != nil {
