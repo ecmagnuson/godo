@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/slices"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -20,7 +19,7 @@ type Task struct {
 	ID        int       // unique ID given to the Task
 	Task      string    // "finish my CS hw before tonight"
 	Location  string    // "@school"
-	Priority  string    // "+p1", "+p2", or "+p3" (high to low) priority
+	Project   string    // "+p1", "+p2", or "+p3" (high to low) priority
 	Created   time.Time // time.Now() called when Task created
 	Completed time.Time // time.Time{} zero date of time.IsZero() until Todo is false
 	Todo      bool      // true if still left to do, else false
@@ -37,7 +36,7 @@ func getTask(text string) Task {
 		ID:        0,
 		Task:      task,
 		Location:  context,
-		Priority:  priority,
+		Project:   priority,
 		Created:   time.Now(),
 		Completed: time.Time{}, //invoking zero date of time.IsZero()
 		Todo:      true,
@@ -49,10 +48,9 @@ func containsLocation(text string) bool {
 	return strings.Contains(text, "@")
 }
 
-//containsPriority returns true if the string has a priority
-func containsPriority(task string) bool {
-	var priorities = []string{"+p1", "+p2", "+p3"}
-	return slices.Contains(priorities, task)
+//containsProject returns true if the string has a project associated with it
+func containsProject(text string) bool {
+	return strings.Contains(text, "+")
 }
 
 //formatString readies the text so that it can be turned into a Task
@@ -60,8 +58,9 @@ func formatString(strTask string) string {
 	if !containsLocation(strTask) {
 		strTask = fmt.Sprintf("%s @unknown", strTask)
 	}
-	if !containsPriority(strTask) {
-		strTask = fmt.Sprintf("%s +p3", strTask)
+	//no need to add project if there is not one given by user
+	if !containsProject(strTask) {
+		strTask = fmt.Sprintf("%s +", strTask)
 	}
 
 	return strTask
