@@ -10,8 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
-//lsLocation lists out all items with a specific location still left todo
-func lsLocation(location string) {
+//ls lists out all items with a specific location still left todo
+func ls(location string) {
 
 	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
 		// logger.Default.LogMode(logger.Info),
@@ -44,7 +44,7 @@ var lsCmd = &cobra.Command{
 	Short: "list out the items in the todo database",
 	Long:  "list out the items in the todo database",
 	Run: func(cmd *cobra.Command, args []string) {
-		lsLocation(strings.Join(args, " "))
+		ls(strings.Join(args, " "))
 	},
 }
 
