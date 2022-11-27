@@ -28,13 +28,10 @@ type Task struct {
 
 //getTask returns a Task from a string
 func getTask(text string) Task {
-	priority := "0"                               //default priority is nothing showing
-	task := text[:strings.IndexByte(text, '@')-1] //collect everything before '@' char
-
-	if strings.HasPrefix(task, "!") {
-		priority = "!"
-		task = text[strings.IndexByte(text, '!')+2 : strings.IndexByte(text, '@')-1]
-	}
+	priority := text[0:1]
+	//..something @home +cleaning
+	//! something @home +cleaning
+	task := text[2 : strings.IndexByte(text, '@')-1] //collect everything before '@' char
 
 	//splits the white space between '@' context and '+' priority
 	contextPlusProject := strings.Fields(text[strings.IndexByte(text, '@'):])
@@ -70,6 +67,10 @@ func formatString(strTask string) string {
 	//no need to add project if there is not one given by user
 	if !containsProject(strTask) {
 		strTask = fmt.Sprintf("%s +", strTask)
+	}
+
+	if !strings.HasPrefix(strTask, "!") {
+		strTask = fmt.Sprintf("  %s", strTask)
 	}
 
 	return strTask
