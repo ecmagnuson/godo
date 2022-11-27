@@ -39,8 +39,8 @@ func getTask(text string) Task {
 
 	return Task{
 		ID:        0,
-		Task:      task,
 		Priority:  priority,
+		Task:      task,
 		Location:  context,
 		Project:   project,
 		Created:   time.Now(),
