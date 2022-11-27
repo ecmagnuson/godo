@@ -3,15 +3,37 @@ package cmd
 import (
 	"fmt"
 	"godo/utils"
-	"log"
 
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-//lsAllLocations lists out all of the locations currently in use in the database
-func lsAllLocations(args []string) {
+//lsCombined lists out all of the unique instances of locations and projects
+//i.e. @home +godo, @home +cleaning, @home +fianance.. etc.
+func lsCombined() {
+	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	var tasks []Task
+	//SELECT DISTINCT `location`,`priority` FROM `tasks` WHERE `todo` = 1
+	db.Distinct("location", "project").Where("todo", 1).Find(&tasks)
+
+	for _, task := range tasks {
+		if task.Location == "@" || task.Project == "+" {
+			continue
+		}
+		fmt.Println(task.Location, task.Project)
+	}
+}
+
+//lsContexts lists out all of the individual locations or projects in use in the database
+func lsContexts(args []string) {
 	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
 		//Logger: logger.Default.LogMode(logger.Info),
 	})
@@ -46,10 +68,10 @@ var allCmd = &cobra.Command{
 	Long:  "list all locations currently in use",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			log.Fatalf("implementing listing all later.")
-			//list out all combinations of @ and + togethor
+			lsCombined()
+		} else {
+			lsContexts(args)
 		}
-		lsAllLocations(args)
 	},
 }
 
