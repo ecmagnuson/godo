@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 //ls lists out all items with a specific location still left todo
@@ -15,7 +16,7 @@ import (
 func ls(str string) {
 
 	db, err := gorm.Open(sqlite.Open(utils.TodoDBPath()), &gorm.Config{
-		//Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logger.Info),
 	})
 
 	if err != nil {
@@ -25,16 +26,19 @@ func ls(str string) {
 	var tasks []Task
 	if len(str) > 0 { //list all from location or project
 		if strings.Contains(str, "+") {
-			//SELECT * FROM `tasks` WHERE project = str AND todo = 1
-			db.Where("project = ? AND todo = ?", str, 1).Find(&tasks)
+			//SELECT * FROM `tasks` WHERE project = str AND todo = 1 ORDER BY priority desc
+			db.Order("priority desc").Where("project = ? AND todo = ?", str, 1).Find(&tasks)
 		} else {
-			//SELECT * FROM `tasks` WHERE location = str AND todo = 1
-			db.Where("location = ? AND todo = ?", str, 1).Find(&tasks)
+			//SELECT * FROM `tasks` WHERE location = str AND todo = 1 ORDER BY priority desc
+			db.Order("priority desc").Where("location = ? AND todo = ?", str, 1).Find(&tasks)
 		}
 	} else { //list all
-		//SELECT * FROM `tasks` WHERE `todo` = 1
-		db.Where("todo", 1).Find(&tasks)
+		//SELECT * FROM `tasks` WHERE `todo` = 1 ORDER BY priority desc
+		db.Order("priority desc").Where("todo", 1).Find(&tasks)
 	}
+
+	/* 	db.Order("priority desc").Find(&tasks)
+	   	// SELECT * FROM users ORDER BY age desc, name; */
 
 	for _, task := range tasks {
 
