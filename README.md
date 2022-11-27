@@ -64,6 +64,7 @@ adding a task for the first time will create `todo.db` inside of `~/.todo/`
 ### one at a time
 
 arguments after `add` command will be added to the database
+
 `godo add complete assignment @school`
 
 arguments can be prefixed with `!` to mark it as high priority
@@ -169,6 +170,7 @@ godo do 1 2 4
 
 ### Installation
 - `git clone https://github.com/ecmagnuson/godo.git`
+- `cd godo`
 - `go build godo`
 
 ### TODO
