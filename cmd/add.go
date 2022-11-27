@@ -16,14 +16,14 @@ import (
 
 //Task is the database type in this program.
 type Task struct {
-	ID        int       // unique ID given to the Task
-	Priority  string    // urgent task prefixed with "!"
-	Task      string    // "finish my CS hw before tonight"
-	Location  string    // "@school"
-	Project   string    // "+p1", "+p2", or "+p3" (high to low) priority
+	ID        int       // unique ID
+	Priority  string    // urgent Task prefixed with "!"
+	Task      string    // "sweep kitchen floor"
+	Location  string    // "@home"
+	Project   string    // "+cleaning"
 	Created   time.Time // time.Now() called when Task created
-	Completed time.Time // time.Time{} zero date of time.IsZero() until Todo is false
-	Todo      bool      // true if still left to do, else false
+	Completed time.Time // time.Now() called when Task is done
+	Todo      bool      // true when created, false when done
 }
 
 //getTask returns a Task from a string
