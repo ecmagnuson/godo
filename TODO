@@ -48,3 +48,13 @@ possibly list out any text at all
 relist out with same location or project?
 
 list only the high priority tasks 
+
+
+example 
+
+ls all @ -- prints out example of every instance of '@'
+ls all + -- prints out example of every instance of '+'
+#ls all ! -- prints out all high priority tasks
+ls @home -- prints out all tasks '@home'
+ls +cleaning -- prints out all projects 'cleaning'
+ls !  -- prints out all high priority tasks
