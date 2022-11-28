@@ -105,7 +105,7 @@ func formatMultipleTasks(args []string) []Task {
 	for {
 		fmt.Print("> ")
 		next, _ := reader.ReadString('\n')
-		if next == "\n" {
+		if strings.TrimSpace(next) == "" { //trims \r carriage for Windows
 			break
 		}
 		next = formatString(next)
