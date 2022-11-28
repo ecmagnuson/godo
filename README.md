@@ -133,7 +133,7 @@ godo ls !
 
 Sometimes I forget the exact `@location` or `+project` I have used in the todo.db, so I have implemented a subcommand `ls all`
 
-list all `@location` tags being used in the todo.db
+list all `@location` tags 
 
 ```
 godo ls all @
@@ -153,7 +153,7 @@ godo ls all +
 +grading
 ```
 
-list every `@home +project` tags being used with `ls all` no args
+list every `@home +project` tags with `ls all` no arguments
 
 ```
 godo ls all
