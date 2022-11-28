@@ -62,7 +62,7 @@ notes:
 adding a task for the first time will create a sqlite3 database `todo.db` inside of `~/.todo/`  
 i.e. `~/.todo/todo.db`
 
-### one at a time
+### add one task at a time
 
 
 - arguments after `add` command will be added to the database  
@@ -76,7 +76,7 @@ i.e. `~/.todo/todo.db`
 - arguments can be given a `+project` as well  
 	`godo add clean fridge @home +cleaning`
 
-### multiple tasks at once
+### add multiple tasks at once
 when `godo add` is called with no arguments you can add multiple tasks at once
 
 ```
