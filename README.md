@@ -18,24 +18,24 @@ Todo      bool      // true when created, false when done
 
 ## Philosophy
 
-    I like to format my tasks as actionable events that have a location
+    I like to format my tasks as actionable events that have a `@location`
     "clean the fridge @home"
 
     tasks can have priority associated with them with `!`
     "! send important email @work"
 
-    Optionally, tasks can have a project associated with it
+    Optionally, tasks can have a `+project` associated with it
     "clean the fridge @home +cleaning"
 
-this way I can split various projects into each location, for example
+this way I can split various projects into each `@location`, for example
 
     "clean fridge @home +cleaning"
-    "pay credit card bill @home finance"
+    "pay credit card bill @home +finance"
 
 both of these tasks are `@home` but they have different `+project` tags associated with them.
-this underlying though process forms the basis of godo
+This underlying though process forms the basis of godo.
 
-the following is a list of the functionality of godo
+The following is a list of the functionality of godo:
 
 - add one task at a time
 - add multiple tasks at a time
@@ -52,31 +52,32 @@ notes:
 
 - When a task is completed, none of the `ls` methods will list it anymore
 - task do not need a location. If one is not given, it will be assigned `@unknown`
-- if a task does not have an `@location` the current implemtation does not allow an `+project`
+- if a task does not have an `@location` the current implementation does not allow a `+project`
 
 
 ## Usage
 `godo setup` will create a .todo directory in the users home directory.
 
 ## Add
-adding a task for the first time will create todo.db inside of ~/.todo/
+adding a task for the first time will create a sqlite3 database `todo.db` inside of `~/.todo/`  
+i.e. `~/.todo/todo.db`
 
 ### one at a time
 
-```
-arguments after `add` command will be added to the database  
-godo add complete assignment @school
-```
-```
-arguments can be prefixed with `!` to mark it as high priority  
-godo add ! send important email to boss @work
-```
-```
-arguments can be given a `+project` as well  
-godo add clean fridge @home +cleaning
-```  
+
+- arguments after `add` command will be added to the database  
+	`godo add complete assignment @school`
+
+
+- arguments can be prefixed with `!` to mark it as high priority  
+	`godo add ! send important email to boss @work`
+
+
+- arguments can be given a `+project` as well  
+	`godo add clean fridge @home +cleaning`
+
 ### multiple tasks at once
-when `godo add` is called with no arguments you can to add multiple tasks at once
+when `godo add` is called with no arguments you can add multiple tasks at once
 
 ```
 godo add
@@ -142,7 +143,7 @@ godo ls all @
 @work
 ```
 
-list all `+project` tags being used in the todo.db
+list all `+project` tags 
 
 ```
 godo ls all +
@@ -152,7 +153,7 @@ godo ls all +
 +grading
 ```
 
-list every `@home +project` unique tag used in the todo.db
+list every `@home +project` tags being used with `ls all` no args
 
 ```
 godo ls all
