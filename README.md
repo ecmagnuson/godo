@@ -33,9 +33,9 @@ this way I can split various projects into each location, for example
     "pay credit card bill @home finance"
 
 both of these tasks are `@home` but they have different `+project` tags associated with them.
-this underlying though process forms the basis of `godo`
+this underlying though process forms the basis of godo
 
-the following is a list of the functionaility of `godo`
+the following is a list of the functionality of godo
 
 - add one task at a time
 - add multiple tasks at a time
@@ -56,43 +56,46 @@ notes:
 
 
 ## Usage
-`godo setup` will create a `.todo` directory in the users home directory.
+`godo setup` will create a .todo directory in the users home directory.
 
 ## Add
-adding a task for the first time will create `todo.db` inside of `~/.todo/`
+adding a task for the first time will create todo.db inside of ~/.todo/
 
 ### one at a time
 
-arguments after `add` command will be added to the database
-
-`godo add complete assignment @school`
-
-arguments can be prefixed with `!` to mark it as high priority
-
-`godo add ! send important email to boss @work`
-
-arguments can be given a `+project` as well
-
-`godo add clean fridge @home +cleaning`
-
+```
+arguments after `add` command will be added to the database  
+godo add complete assignment @school
+```
+```
+arguments can be prefixed with `!` to mark it as high priority  
+godo add ! send important email to boss @work
+```
+```
+arguments can be given a `+project` as well  
+godo add clean fridge @home +cleaning
+```  
 ### multiple tasks at once
 when `godo add` is called with no arguments you can to add multiple tasks at once
 
 ```
+godo add
+
 > ! call bank @home +finance
 > grade papers @school +grading
 > finish my part of presentation @school
 >
 ```
-To break out of this and add each line - corresponding to each task - just hit `Enter ↵` on a blank line and it will add each task to the todo.db
+Each line corresponds to a new task. To break out of this, hit `Enter ↵` on a blank line and it will add each task to the todo.db
 
 ## List
 high priority tasks will always print first
 
-list everything in `todo.db`
+list everything in todo.db
 
 ```
 godo ls
+
 2 ! send important email to boss @work
 4 ! call bank @home +finance
 1   complete assignment @school
@@ -105,6 +108,7 @@ list everything `@home`
 
 ```
 godo ls @home
+
 4 ! call bank @home +finance
 3   clean fridge @home +cleaning
 ```
@@ -113,6 +117,7 @@ list every taks with `+finance` tag
 
 ```
 godo ls +finance
+
 4 ! call bank @home +finance
 ```
 
@@ -120,34 +125,38 @@ list every task with a high priority
 
 ```
 godo ls !
+
 2 ! send important email to boss @work
 4 ! call bank @home +finance
 ```
 
-Sometimes I forget the exact `@location` or `+project` I have used in the `todo.db`, so I have implemented a subcommand `ls all`
+Sometimes I forget the exact `@location` or `+project` I have used in the todo.db, so I have implemented a subcommand `ls all`
 
-list all `@location` tags being used in the `todo.db`
+list all `@location` tags being used in the todo.db
 
 ```
 godo ls all @
+
 @home
 @school
 @work
 ```
 
-list all `+project` tags being used in the `todo.db`
+list all `+project` tags being used in the todo.db
 
 ```
 godo ls all +
+
 +cleaning
 +finance
 +grading
 ```
 
-list every `@home +project` unique tag used in the `todo.db`
+list every `@home +project` unique tag used in the todo.db
 
 ```
 godo ls all
+
 @home +cleaning
 @home +finance
 @school +grading
