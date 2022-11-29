@@ -32,7 +32,7 @@ func ls(str string) {
 			db.Order("priority desc").Where("location = ? AND todo = ?", str, 1).Find(&tasks)
 		} else if strings.Contains(str, "!") {
 			//SELECT * FROM `tasks` WHERE priority = "!"
-			db.Where("priority = ?", str).Find(&tasks)
+			db.Where("priority = ? AND todo = ?", str, 1).Find(&tasks)
 		}
 	} else { //list all
 		//SELECT * FROM `tasks` WHERE `todo` = 1 ORDER BY priority desc
