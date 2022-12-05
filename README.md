@@ -184,9 +184,6 @@ godo do 1 2 4
 - `cd godo`
 - `go build godo`
 
-### TODO
-- implement listing of done tasks
-
 
 ### Future?
 - Reimpliment with raw SQL instead of GORM
