@@ -187,4 +187,5 @@ godo do 1 2 4
 
 ### Future?
 - Reimpliment with raw SQL instead of GORM
+- Look into a method for adding a task that I want to keep track of but is in the future
 
